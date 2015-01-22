@@ -226,7 +226,7 @@ public class Calibration extends Model {
             CalibrationSendQueue.addToQueue(calibration, context);
         }
         CalibrationRequest.createOffset(lowerCalibration.bg, 35);
-        Notifications.notificationSetter(context);
+        Notifications.getInstance().notificationSetter(context);
     }
 
     public static void create(CalRecord[] calRecords, Context context, boolean override) {
@@ -296,7 +296,7 @@ public class Calibration extends Model {
                     Calibration.create(calRecords, context, true);
                 }
             }
-            Notifications.notificationSetter(context);
+            Notifications.getInstance().notificationSetter(context);
         }
     }
 
@@ -363,7 +363,7 @@ public class Calibration extends Model {
                 calculate_w_l_s();
                 adjustRecentBgReadings();
                 CalibrationSendQueue.addToQueue(calibration, context);
-                Notifications.notificationSetter(context);
+                Notifications.getInstance().notificationSetter(context);
                 Calibration.requestCalibrationIfRangeTooNarrow();
             }
         } else {
