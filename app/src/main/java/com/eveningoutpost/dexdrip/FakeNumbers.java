@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.eveningoutpost.dexdrip.Models.BgReading;
+import com.eveningoutpost.dexdrip.UtilityModels.AlertPlayer;
 
 
 public class FakeNumbers extends Activity {
@@ -46,5 +47,34 @@ public class FakeNumbers extends Activity {
             }
 
         });
+        
+        button = (Button)findViewById(R.id.StartMusic);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AlertPlayer ap = AlertPlayer.getPlayer();
+                ap.startAlert(getApplicationContext(),30000, "/file1.mp3");
+                
+            }
+        });
+
+        button = (Button)findViewById(R.id.StopMusic);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AlertPlayer ap = AlertPlayer.getPlayer();
+                ap.stopMusic(getApplicationContext());
+                
+            }
+        });
+        
+        button = (Button)findViewById(R.id.Snooze);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AlertPlayer ap = AlertPlayer.getPlayer();
+                ap.Snooze(getApplicationContext(), 90000);
+                
+            }
+        });
+
+        
     }
 }
