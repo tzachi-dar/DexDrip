@@ -70,7 +70,7 @@ public class AlertPlayer {
         }
     }
 
-    public synchronized  void startAlert(Context ctx, int repeatTime, String fileName, )  {
+    public synchronized  void startAlert(Context ctx, int repeatTime, String fileName)  {
       Log.e(TAG, "start called, Threadid " + Thread.currentThread().getId());
       stopMusic(ctx, false);
       AlertPlayerPersitantData.saveData(fileName, repeatTime);

@@ -61,7 +61,7 @@ public class FakeNumbers extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertPlayer ap = AlertPlayer.getPlayer();
-                ap.stopMusic(getApplicationContext());
+                ap.stopMusic(getApplicationContext(), true);
                 
             }
         });
