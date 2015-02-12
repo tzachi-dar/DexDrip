@@ -52,7 +52,7 @@ public class Notifications {
     public static boolean calibration_sound;
     public static int calibration_snooze;
     public static String calibration_notification_sound;
-    private final static String TAG = Notifications.class.getSimpleName();
+    private final static String TAG = AlertPlayer.class.getSimpleName();
 
     
     int currentVolume;
@@ -104,19 +104,23 @@ public class Notifications {
  */
     
     public void FileBasedNotifications(Context context) {
+        
+        // Make sure we have our alerts set...
+        AlertType.CreateStaticAlerts(context);
+        
         BgGraphBuilder bgGraphBuilder = new BgGraphBuilder(context);
-        double high = bgGraphBuilder.highMark;
-        double low = bgGraphBuilder.lowMark;
         Sensor sensor = Sensor.currentSensor();
         
         List<BgReading> bgReadings = BgReading.latest(3);
         BgReading bgReading = bgReadings.get(0);
         
+        Log.e(TAG, "FileBasedNotifications called bgReading.calculated_value = " + bgReading.calculated_value);
         // TODO: tzachi what is the time of this last bgReading 
         
         if (bg_notifications && sensor != null) {
             AlertType newAllert = AlertType.get_highest_active_alert(bgGraphBuilder.unitized(bgReading.calculated_value), 0);
             if (newAllert == null) {
+                Log.e(TAG, "FileBasedNotifications - No active notifcation exists, stopping all allerts");
                 // No alert should work, Stop all allerts.
                 AlertPlayer.getPlayer().stopAlert(true);
                 return;
@@ -124,6 +128,7 @@ public class Notifications {
             
             ActiveBgAlert activeBgAlert = ActiveBgAlert.getOnly();
             if(activeBgAlert == null) {
+                Log.e(TAG, "FileBasedNotifications we have a new allert, starting to play it...");
                 // We need to create a new allert  and start playing
                 AlertPlayer.getPlayer().startAlert(context, newAllert);
                 return;
@@ -132,6 +137,7 @@ public class Notifications {
             
             if (activeBgAlert.alert_uuid == newAllert.uuid) {
                 // This is the same alert. Might need to play again...
+                Log.e(TAG, "FileBasedNotifications we have found an active allert, checking if we need to play it...");
                 AlertPlayer.getPlayer().ClockTick(context);
                 return;
             }
@@ -172,6 +178,9 @@ public class Notifications {
     // only function that is realy called from outside...
     public void notificationSetter(Context context) {
         ReadPerfs(context);
+        
+        FileBasedNotifications(context);
+        
         BgGraphBuilder bgGraphBuilder = new BgGraphBuilder(context);
         double high = bgGraphBuilder.highMark;
         double low = bgGraphBuilder.lowMark;
